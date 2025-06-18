@@ -242,6 +242,12 @@ class EDA:
             st.text(buffer.getvalue())
             st.dataframe(df.describe())
 
+            st.subheader("🧪 Null & Duplicate Check")
+            st.write("결측치 개수:")
+            st.write(df.isnull().sum())
+
+            st.write(f"중복된 행 수: {df.duplicated().sum()}개")
+
         with tabs[1]:
             st.subheader("📈 Yearly Population Trend")
             national = df[df['지역'] == '전국']
@@ -296,6 +302,7 @@ class EDA:
                     .format({'인구': '{:,.0f}', '증감': '{:,.0f}'})
                     .background_gradient(subset='증감', cmap='RdBu_r')
             )
+    
 
         with tabs[4]:
             st.subheader("🌈 Stacked Area Plot by Region")
