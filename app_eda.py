@@ -287,9 +287,17 @@ class EDA:
             local.sort_values(by=['지역영문', '연도'], inplace=True)
             local['증감'] = local.groupby('지역영문')['인구'].diff()
             top = local.sort_values(by='증감', key=abs, ascending=False).head(100)
-            top['인구'] = top['인구'].map('{:,.0f}'.format)
-            top['증감'] = top['증감'].map('{:,.0f}'.format)
-            st.dataframe(top[['연도', '지역영문', '인구', '증감']].style.background_gradient(subset='증감', cmap='RdBu_r'))
+
+            # ✅ 컬러바용 숫자 유지
+            styled_df = top[['연도', '지역영문', '인구', '증감']].copy()
+
+            # ✅ 포맷용 텍스트 처리
+            display_df = styled_df.copy()
+            display_df['인구'] = display_df['인구'].map('{:,.0f}'.format)
+            display_df['증감'] = display_df['증감'].map('{:,.0f}'.format)
+
+            # ✅ 숫자형 기준으로 스타일 적용
+            st.dataframe(display_df.style.background_gradient(subset='증감', cmap='RdBu_r'))
 
         with tabs[4]:
             st.subheader("🌈 Stacked Area Plot by Region")
